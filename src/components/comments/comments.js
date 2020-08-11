@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Axios from 'axios'; 
+import CommentDetails from './commentDetails'; 
 
 
 class Comments extends Component { 
@@ -43,6 +44,7 @@ class Comments extends Component {
                <h3>Comment Section</h3>
                Add comment: <input type="text" onChange={this.commentOnHandler} />
                 <button onClick={this.submitComment}>Add comment</button>
+                <CommentDetails/>
             </div>
         )
     }
