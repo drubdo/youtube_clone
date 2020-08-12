@@ -6,7 +6,7 @@ class Search extends React.Component {
     constructor(props){
         super(props)
         this.config = {
-            youtubeApi: 'AIzaSyAbSA4hqrHZX3myZ7P7ViSqBraAf6EKnpA'
+            youtubeApi: 'AIzaSyBMpy7LKrgHmjC8PyzIgjtTYDa0K07Uq-U'
         }
         this.state = {
             query : "", 
@@ -49,29 +49,31 @@ class Search extends React.Component {
 
         })
     } 
-
+ 
     render(){
         return (
             
             <div>
-                <Test videoId={this.state.videoId}> </Test>
-                <div style={{width:"500px",backgroundColor:"orange", height:"200px",display:'inline-block', overflow:'auto'}}>
+
+                <div style={{width:"100%",backgroundColor:"orange", height:"250px",overflowX:'scroll', whiteSpace:'nowrap', padding:'20px'}}>
                 related videos
                 {
                     this.state.relatedVideos.map((video, index) =>
-                        <div style={{display:'inline-block', overflow:'auto'}}>
+                        <div style={{display:'inline-block'}}>
                             
-                            <iframe allow="autoPlay" width="420" height="315" src={"https://www.youtube.com/embed/" + video.id.videoId} title="videos"></iframe>
+                            <iframe allow="autoPlay" width="300" height="180" src={"https://www.youtube.com/embed/" + video.id.videoId} title="videos"></iframe>
                         </div>
                     )
                 }
             </div>
+            <br/> 
 
                 <input type="text" id="fname" name="fname" onChange={this.queryHandler}/> <button type="button" onClick={this.search}>Click Me!</button>
-                <iframe allow="autoPlay" width="420" height="315" src={this.state.currentVideo} title="videos"></iframe>
+                <br/> <iframe allow="autoPlay" width="420" height="315" src={this.state.currentVideo} title="videos"></iframe>
             
             </div>
         )
     }
 }
 export default Search; 
+
