@@ -40,7 +40,7 @@ class Search extends React.Component {
     }
 
     RelatedVideos = () => { 
-        Axios.get(`https://www.googleapis.com/youtube/v3/search?relatedToVideoId=${this.state.videoId}&type=video&key=${this.config.youtubeApi}`).then(res => {
+        Axios.get(`https://www.googleapis.com/youtube/v3/search?relatedToVideoId=${this.state.videoId}&type=video&maxResults=10&key=${this.config.youtubeApi}`).then(res => {
             console.log('relatedVideos', res)
             this.setState({
                 relatedVideos:res.data.items
@@ -50,6 +50,13 @@ class Search extends React.Component {
         })
     } 
  
+    playVideo = (video) => {
+        this.setState({
+            currentVideo: 'https://www.youtube.com/embed' + video.id.videoId + '?autoplay=1',
+            videoId : video.id.videoId
+        })
+    }
+
     render(){
         return (
             
@@ -62,6 +69,7 @@ class Search extends React.Component {
                         <div style={{display:'inline-block'}}>
                             
                             <iframe allow="autoPlay" width="300" height="180" src={"https://www.youtube.com/embed/" + video.id.videoId} title="videos"></iframe>
+                            <button onClick={() => this.playVideo(video)}>Play</button>
                         </div>
                     )
                 }
