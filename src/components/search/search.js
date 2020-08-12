@@ -52,7 +52,7 @@ class Search extends React.Component {
  
     playVideo = (video) => {
         this.setState({
-            currentVideo: 'https://www.youtube.com/embed' + video.id.videoId + '?autoplay=1',
+            currentVideo: 'https://www.youtube.com/embed/' + video.id.videoId + '?autoplay=1',
             videoId : video.id.videoId
         })
     }
