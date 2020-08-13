@@ -15,11 +15,11 @@ class CollectionVideos extends Component {
     render() {
         return (
             <Container  className="themed-container">
-                <Row  style={{padding:"15px"}}>
+                <Row style={{padding:"15px"}}>
                 {
                     this.props.details.map((video, index) =>
-                    <Col xs="6" sm="4" style={{padding:"15px"}}>
-                            <img style={{width:"250px", height:"250px"}} src={'https://img.youtube.com/vi/' + video.contentDetails.videoId + '/default.jpg'}  onClick={() => this.playVideo(video.contentDetails.videoId)}/>
+                    <Col xs="6" sm="4" style={{padding:"15px", cursor:"pointer"}}>
+                            <img style={{width:"350px", height:"250px"}} src={'https://img.youtube.com/vi/' + video.contentDetails.videoId + '/default.jpg'}  onClick={() => this.playVideo(video.contentDetails.videoId)}/>
                         </Col>
                     )
                 }

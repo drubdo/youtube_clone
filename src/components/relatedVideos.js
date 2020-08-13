@@ -6,11 +6,11 @@ class RelatedVideos extends React.Component {
     }
     render() {
         return (
-            <div style={{ width: "100%", backgroundColor: "orange", height: "250px", overflowX: 'scroll', whiteSpace: 'nowrap', padding: '20px' }}>
+            <div style={{ width: "100%", backgroundColor: "#235e71", height: "235px", overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', padding: '20px', marginBottom:"15px"}}>
                 {
                     this.props.relatedVideos.map((video, index) =>
                         <div style={{ display: 'inline-block' }}>
-                            <img style={{ width: "300px", height: "200px", marginRight: "10px" }} src={'https://img.youtube.com/vi/' + video.id.videoId + '/default.jpg'} onClick={() => this.props.playVideo(video.id.videoId)} />
+                            <img style={{ width: "300px", height: "180px", marginRight: "5px", cursor:"pointer" }} src={'https://img.youtube.com/vi/' + video.id.videoId + '/default.jpg'} onClick={() => this.props.playVideo(video.id.videoId)} />
                         </div>
                     )
                 }

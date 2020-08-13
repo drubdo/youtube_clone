@@ -199,7 +199,7 @@ class Main extends Component {
         return (
             <div>
                 <SearchVideo searchVideo={this.searchVideo} />
-                
+
                 {!this.state.currentVideo && <CollectionVideos details={this.state.collectionVideos} playVideo={this.playVideo} />}
                 {
                     this.state.currentVideo &&
