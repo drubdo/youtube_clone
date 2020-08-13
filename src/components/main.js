@@ -19,12 +19,13 @@ class Main extends Component {
             relatedVideos: [],
             playlistId: "PLIuXETiXnqzBSZAi7ZEVd1q-_pi7MdeMV",
             collectionVideos: [],
-            realApi: false // false = use fake sample json, true = use valid youtubeapi key
+            realApi: false, // false = use fake sample json, true = use valid youtubeapi key
+            commentDetails: []
         }
 
         this.currentVideoIdApi = {
             items: [
-                { id: { videoId: "DLX62G4lc44" } }
+                { id: { videoId: "Ke90Tje7VS0" } }
             ]
         }
 
@@ -73,7 +74,8 @@ class Main extends Component {
         this.setState({
             currentVideo: videoId
         })
-        this.relatedVideos()
+        this.getComments(videoId);
+        this.relatedVideos();
     }
 
     searchVideo = (searchValue) => {
@@ -84,6 +86,7 @@ class Main extends Component {
                 currentVideo: currentVideoId,
                 videoId: currentVideoId
             })
+            this.playVideo(currentVideoId)
         } else {
             Axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&autoplay=1&q=${searchValue}&key=${this.config.youtubeApi}`).then(res => {
                 const currentVideoId = res.data.items[0].id.videoId;
@@ -91,7 +94,7 @@ class Main extends Component {
                     currentVideo: currentVideoId,
                     videoId: currentVideoId
                 })
-                
+                this.playVideo(currentVideoId)
             })
         }
     }
@@ -113,13 +116,82 @@ class Main extends Component {
 
     addNewComment = (newComment) => {
         Axios.post('http://localhost:5000/api/comments/', {
-            youtubeId: this.state.currentVideo, 
+            youtubeId: this.state.currentVideo,
             comment: newComment
         })
         .then(res => {
-            console.log(res)
+            this.getComments(this.state.currentVideo)
         }, function (err) {
             alert('Something went wrong.')
+        })
+    }
+
+    getComments = (videoId) => {
+        let youtubeId = videoId;
+        Axios.get('http://localhost:5000/api/comments/' + youtubeId)
+            .then(res => {
+                this.setState({
+                    commentDetails: res.data
+                })
+            }, function (err) {
+                console.log(err)
+            })
+    }
+
+    likeOnHandler = (comment) => {
+
+        if(comment.likes){
+            comment.likes++
+        }else{
+            comment.likes = 1
+        }
+
+        Axios.put('http://localhost:5000/api/comments/' + comment._id, {
+            "comment": comment.comment,
+            "dislikes": comment.dislikes,
+            "likes": comment.likes,
+            "youtubeId": comment.youtubeId
+        })
+            .then(res => {
+                this.getComments(comment.youtubeId)
+
+            }, function (err) {
+
+                console.log(err)
+            })
+    }
+
+    dislikeOnHandler = (comment) => {
+
+        if(comment.dislikes){
+            comment.dislikes++
+        }else{
+            comment.dislikes = 1
+        }
+        
+        Axios.put('http://localhost:5000/api/comments/' + comment._id, {
+            "comment": comment.comment,
+            "dislikes": comment.dislikes,
+            "likes": comment.likes,
+            "youtubeId": comment.youtubeId
+        })
+        .then(res => {
+            this.getComments(comment.youtubeId)
+        }, function (err) {
+            console.log(err)
+        })
+    }
+
+    submitReply = (comment) => {
+        Axios.put('http://localhost:5000/api/comments/replyComment/' + comment._id, {
+            "comment": comment.comment
+        })
+        .then(res => {
+            this.getComments(comment.youtubeId)
+
+        }, function (err) {
+
+            console.log(err)
         })
     }
 
@@ -133,7 +205,7 @@ class Main extends Component {
                         <RelatedVideos relatedVideos={this.state.relatedVideos} />
                         <SearchVideo searchVideo={this.searchVideo} />
                         <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe>
-                        <Comments videoId={this.state.currentVideo} addNewComment={this.addNewComment} />
+                        <Comments videoId={this.state.currentVideo} addNewComment={this.addNewComment} commentDetails={this.state.commentDetails} likeOnHandler={this.likeOnHandler} dislikeOnHandler={this.dislikeOnHandler} submitReply={this.submitReply}/>
                     </div>
                 }
             </div>
