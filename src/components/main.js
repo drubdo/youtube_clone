@@ -72,17 +72,17 @@ class Main extends Component {
         this.setState({
             currentVideo: videoId
         })
+        this.relatedVideos()
     }
 
     searchVideo = (searchValue) => {
 
         if (!this.state.realApi) {
-            const currentVideoId = this.state.currentVideoIdApi.items[0].id.videoId;
+            const currentVideoId = this.currentVideoIdApi.items[0].id.videoId;
             this.setState({
                 currentVideo: currentVideoId,
                 videoId: currentVideoId
             })
-            this.relatedVideos()
         } else {
             Axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&autoplay=1&q=${searchValue}&key=${this.config.youtubeApi}`).then(res => {
                 const currentVideoId = res.data.items[0].id.videoId;
@@ -90,7 +90,7 @@ class Main extends Component {
                     currentVideo: currentVideoId,
                     videoId: currentVideoId
                 })
-                this.relatedVideos()
+                
             })
         }
     }
@@ -117,9 +117,9 @@ class Main extends Component {
                 {
                     this.state.currentVideo &&
                     <div>
+                        <RelatedVideos relatedVideos={this.state.relatedVideos} />
                         <SearchVideo searchVideo={this.searchVideo} />
                         <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe>
-                        <RelatedVideos relatedVideos={this.state.relatedVideos} />
                     </div>
                 }
             </div>
