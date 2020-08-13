@@ -10,7 +10,7 @@ class RelatedVideos extends React.Component {
                 {
                     this.props.relatedVideos.map((video, index) =>
                         <div style={{ display: 'inline-block' }}>
-                            <img style={{ width: "300px", height: "200px", marginRight: "10px" }} src={'https://img.youtube.com/vi/' + video.id.videoId + '/default.jpg'} onClick={() => this.playVideo(video)} />
+                            <img style={{ width: "300px", height: "200px", marginRight: "10px" }} src={'https://img.youtube.com/vi/' + video.id.videoId + '/default.jpg'} onClick={() => this.props.playVideo(video.id.videoId)} />
                         </div>
                     )
                 }
