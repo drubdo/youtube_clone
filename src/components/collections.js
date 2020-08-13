@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Container, Row, Col } from 'reactstrap';
 
 class CollectionVideos extends Component {
     constructor(props) {
@@ -13,15 +14,17 @@ class CollectionVideos extends Component {
 
     render() {
         return (
-            <div className="row">
+            <Container  className="themed-container">
+                <Row  style={{padding:"15px"}}>
                 {
                     this.props.details.map((video, index) =>
-                        <div className="col-sm-4">
-                            <img style={{width:"200px", height:"200px"}} src={'https://img.youtube.com/vi/' + video.contentDetails.videoId + '/default.jpg'}  onClick={() => this.playVideo(video.contentDetails.videoId)}/>
-                        </div>
+                    <Col xs="6" sm="4" style={{padding:"15px"}}>
+                            <img style={{width:"250px", height:"250px"}} src={'https://img.youtube.com/vi/' + video.contentDetails.videoId + '/default.jpg'}  onClick={() => this.playVideo(video.contentDetails.videoId)}/>
+                        </Col>
                     )
                 }
-            </div>
+                </Row>
+            </Container>
         )
     }
 }
