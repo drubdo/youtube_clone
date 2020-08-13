@@ -33,9 +33,13 @@ class Main extends Component {
             items: [
                 { contentDetails: { videoId: "DLX62G4lc44" } },
                 { contentDetails: { videoId: "Ke90Tje7VS0" } },
-                { contentDetails: { videoId: "DLX62G4lc44" } },
-                { contentDetails: { videoId: "Ke90Tje7VS0" } },
-                { contentDetails: { videoId: "DLX62G4lc44" } }
+                { contentDetails: { videoId: "zOjov-2OZ0E" } },
+                { contentDetails: { videoId: "rfscVS0vtbw" } },
+                { contentDetails: { videoId: "_uQrJ0TkZlc" } },
+                { contentDetails: { videoId: "W6NZfCO5SIk" } },
+                { contentDetails: { videoId: "sBws8MSXN7A" } },
+                { contentDetails: { videoId: "ZS_kXvOeQ5Y" } },
+                { contentDetails: { videoId: "lYWYWyX04JI" } }
             ]
         }
 
@@ -43,9 +47,13 @@ class Main extends Component {
             items: [
                 { id: { videoId: "DLX62G4lc44" } },
                 { id: { videoId: "Ke90Tje7VS0" } },
-                { id: { videoId: "DLX62G4lc44" } },
-                { id: { videoId: "Ke90Tje7VS0" } },
-                { id: { videoId: "DLX62G4lc44" } }
+                { id: { videoId: "zOjov-2OZ0E" } },
+                { id: { videoId: "rfscVS0vtbw" } },
+                { id: { videoId: "_uQrJ0TkZlc" } },
+                { id: { videoId: "W6NZfCO5SIk" } },
+                { id: { videoId: "sBws8MSXN7A" } },
+                { id: { videoId: "ZS_kXvOeQ5Y" } },
+                { id: { videoId: "lYWYWyX04JI" } }
             ]
         }
     }
@@ -78,10 +86,16 @@ class Main extends Component {
         this.relatedVideos();
     }
 
+
+    selectRandomVideoFromFakeApi(){
+        //pull random video from collections due to quota limit
+        return Math.floor(Math.random() * this.collectionVideosApi.items.length);
+    }
+
     searchVideo = (searchValue) => {
 
         if (!this.state.realApi) {
-            const currentVideoId = this.currentVideoIdApi.items[0].id.videoId;
+            const currentVideoId = this.collectionVideosApi.items[this.selectRandomVideoFromFakeApi()].contentDetails.videoId;
             this.setState({
                 currentVideo: currentVideoId,
                 videoId: currentVideoId
