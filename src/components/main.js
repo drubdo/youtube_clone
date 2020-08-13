@@ -198,12 +198,14 @@ class Main extends Component {
     render() {
         return (
             <div>
+                <SearchVideo searchVideo={this.searchVideo} />
+                
                 {!this.state.currentVideo && <CollectionVideos details={this.state.collectionVideos} playVideo={this.playVideo} />}
                 {
                     this.state.currentVideo &&
                     <div>
                         <RelatedVideos relatedVideos={this.state.relatedVideos} playVideo={this.playVideo}/>
-                        <SearchVideo searchVideo={this.searchVideo} />
+                        
                         <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe>
                         <Comments videoId={this.state.currentVideo} addNewComment={this.addNewComment} commentDetails={this.state.commentDetails} likeOnHandler={this.likeOnHandler} dislikeOnHandler={this.dislikeOnHandler} submitReply={this.submitReply}/>
                     </div>
