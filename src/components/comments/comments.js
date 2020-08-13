@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import Axios from 'axios'; 
 import CommentDetails from './commentDetails'; 
-
 
 class Comments extends Component { 
     
@@ -13,38 +11,22 @@ class Comments extends Component {
     }
 
     commentOnHandler = (e) => {
-        let newComment = e.target.value;
-
         this.setState({
-            "newComment" : newComment
+            "newComment" : e.target.value
         })
-        
     }
 
-    submitComment = (e) => {
-        console.log(this.state)
-
-        
-        Axios.post('http://localhost:5000/api/comments/',{
-            youtubeId: "youtubeId", 
-            comment: this.state.newComment
-        })
-            .then(res => {
-                console.log(res)
-
-            }, function (err) {
-                
-                console.log(err)
-            })
+    addNewComment = () => { 
+        this.props.addNewComment(this.state.newComment)
     }
 
     render(){
         return (
             <div>
-               <h3>Comment Section</h3>
-               Add comment: <input type="text" onChange={this.commentOnHandler} />
-                <button onClick={this.submitComment}>Add comment</button>
-                <CommentDetails/>
+               <h3>Comment Section {this.props.videoId}</h3>
+                Add comment: <input type="text" onChange={this.commentOnHandler} />
+                <button onClick={this.addNewComment}>Add comment</button>
+                <CommentDetails videoId={this.props.videoId}/>
             </div>
         )
     }

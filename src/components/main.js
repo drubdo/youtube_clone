@@ -3,6 +3,7 @@ import Axios from 'axios';
 import CollectionVideos from './collections';
 import SearchVideo from './search';
 import RelatedVideos from './relatedVideos';
+import Comments from '../components/comments/comments';
 
 class Main extends Component {
     constructor(props) {
@@ -110,6 +111,18 @@ class Main extends Component {
         }
     }
 
+    addNewComment = (newComment) => {
+        Axios.post('http://localhost:5000/api/comments/', {
+            youtubeId: this.state.currentVideo, 
+            comment: newComment
+        })
+        .then(res => {
+            console.log(res)
+        }, function (err) {
+            alert('Something went wrong.')
+        })
+    }
+
     render() {
         return (
             <div>
@@ -120,6 +133,7 @@ class Main extends Component {
                         <RelatedVideos relatedVideos={this.state.relatedVideos} />
                         <SearchVideo searchVideo={this.searchVideo} />
                         <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe>
+                        <Comments videoId={this.state.currentVideo} addNewComment={this.addNewComment} />
                     </div>
                 }
             </div>
