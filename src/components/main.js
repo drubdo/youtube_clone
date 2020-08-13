@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Axios from 'axios';
 import CollectionVideos from './collections';
+import SearchVideo from './search';
 
 class Main extends Component { 
     constructor(props){
@@ -10,7 +11,7 @@ class Main extends Component {
             youtubeApi: 'AIzaSyBFMXe8ompwelRgxm7aMpUbxlrFC8A2qiU'
         }
         this.state = {
-            query : "", 
+            searchValue : "", 
             currentVideo : "",
             videoId : "",
             relatedVideos : [], 
@@ -38,11 +39,27 @@ class Main extends Component {
         })
     }    
 
+    searchVideo = (searchValue) => {
+        Axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&autoplay=1&q=${searchValue}&key=${this.config.youtubeApi}`).then(res => {
+            const currentVideoId = res.data.items[0].id.videoId;
+            this.setState({
+                currentVideo: currentVideoId,
+                videoId: currentVideoId
+            })
+        })
+    }
+
     render(){
         return (
             <div>
-                {!this.state.currentVideo && <CollectionVideos details={this.state.collectionVideos} playVideo={this.playVideo}/> }
-                {this.state.currentVideo && <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe> }
+                { !this.state.currentVideo && <CollectionVideos details={this.state.collectionVideos} playVideo={this.playVideo}/> }
+                { 
+                    this.state.currentVideo && 
+                    <div>
+                        <SearchVideo searchVideo={this.searchVideo}/>
+                        <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe> 
+                    </div>
+                }
             </div>
         )
     }
