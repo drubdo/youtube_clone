@@ -6,17 +6,19 @@ class Search extends React.Component {
     constructor(props) {
         super(props)
         this.config = {
-            youtubeApi: 'AIzaSyBMpy7LKrgHmjC8PyzIgjtTYDa0K07Uq-U'
+            youtubeApi: 'AIzaSyBFMXe8ompwelRgxm7aMpUbxlrFC8A2qiU'
         }
         this.state = {
             query: "",
             currentVideo: "",
             videoId: "",
-            relatedVideos: []
+            relatedVideos:[],
+            collectionVideo:[]
         }
 
     }
     componentDidMount() {
+        this.getCollection()
 
     }
 
@@ -39,6 +41,19 @@ class Search extends React.Component {
             query: e.target.value
         })
     }
+
+    getCollection = (e) => {
+        console.log("Hola!")
+        Axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=PLIuXETiXnqzBSZAi7ZEVd1q-_pi7MdeMV&key=${this.config.youtubeApi}`).then(res => {
+            console.log(res.data)
+            this.setState({
+                collectionVideo: res.data.items
+                
+            })
+            
+
+        })  
+    } 
 
     RelatedVideos = () => {
         Axios.get(`https://www.googleapis.com/youtube/v3/search?relatedToVideoId=${this.state.videoId}&type=video&maxResults=10&key=${this.config.youtubeApi}`).then(res => {
@@ -80,12 +95,21 @@ class Search extends React.Component {
                 <form onSubmit={this.search} >
                     <input type="text" id="fname" name="fname" onChange={this.queryHandler}/>
 
-                    <div class="btn-group" >
+                    <div class="btn-group" > 
                         <button type="submit">onSubmit</button>
                     </div>
 
                 </form> 
 
+                {
+                        this.state.collectionVideo.map((video, index) =>
+                            <div style={{ display: 'inline-block' }}>
+
+                                <iframe allow="autoPlay" width="300" height="180" src={"https://www.youtube.com/embed/" + video.contentDetails.videoId} title="videos"></iframe>
+                                <button onClick={() => this.playVideo(video)}>Play</button>
+                            </div>
+                        )
+                    }
             </div>
         )
     }
