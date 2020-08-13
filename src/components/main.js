@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Axios from 'axios';
 import CollectionVideos from './collections';
 import SearchVideo from './search';
+import RelatedVideos from './relatedVideos';
 
 class Main extends Component { 
     constructor(props){
@@ -33,7 +34,6 @@ class Main extends Component {
     }
 
     playVideo = (videoId) => {
-        alert(videoId)
         this.setState({
             currentVideo: videoId
         })
@@ -45,6 +45,15 @@ class Main extends Component {
             this.setState({
                 currentVideo: currentVideoId,
                 videoId: currentVideoId
+            })
+            this.relatedVideos()
+        })
+    }
+
+    relatedVideos = () => { 
+        Axios.get(`https://www.googleapis.com/youtube/v3/search?relatedToVideoId=${this.state.currentVideo}&type=video&key=${this.config.youtubeApi}`).then(res => {
+            this.setState({
+                relatedVideos: res.data.items
             })
         })
     }
@@ -58,6 +67,7 @@ class Main extends Component {
                     <div>
                         <SearchVideo searchVideo={this.searchVideo}/>
                         <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe> 
+                        <RelatedVideos relatedVideos={this.state.relatedVideos}/>
                     </div>
                 }
             </div>
