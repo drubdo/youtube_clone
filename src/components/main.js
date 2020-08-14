@@ -4,6 +4,8 @@ import CollectionVideos from './collections';
 import SearchVideo from './search';
 import RelatedVideos from './relatedVideos';
 import Comments from '../components/comments/comments';
+import MainVideo from './mainVideo';
+import { Fade } from 'reactstrap';
 
 class Main extends Component {
     constructor(props) {
@@ -20,7 +22,8 @@ class Main extends Component {
             playlistId: "PLIuXETiXnqzBSZAi7ZEVd1q-_pi7MdeMV",
             collectionVideos: [],
             realApi: false, // false = use fake sample json, true = use valid youtubeapi key
-            commentDetails: []
+            commentDetails: [],
+            fadeIn: true
         }
 
         this.currentVideoIdApi = {
@@ -58,6 +61,12 @@ class Main extends Component {
         }
     }
 
+    toggle = (fadeIn) => {
+        this.setState({
+            fadeIn: fadeIn
+        })
+    }
+
     componentDidMount() {
         this.getCollections();
     }
@@ -79,6 +88,7 @@ class Main extends Component {
     }
 
     playVideo = (videoId) => {
+        this.toggle(true)
         this.setState({
             currentVideo: videoId
         })
@@ -87,7 +97,7 @@ class Main extends Component {
     }
 
 
-    selectRandomVideoFromFakeApi(){
+    selectRandomVideoFromFakeApi() {
         //pull random video from collections due to quota limit
         return Math.floor(Math.random() * this.collectionVideosApi.items.length);
     }
@@ -133,11 +143,11 @@ class Main extends Component {
             youtubeId: this.state.currentVideo,
             comment: newComment
         })
-        .then(res => {
-            this.getComments(this.state.currentVideo)
-        }, function (err) {
-            alert('Something went wrong.')
-        })
+            .then(res => {
+                this.getComments(this.state.currentVideo)
+            }, function (err) {
+                alert('Something went wrong.')
+            })
     }
 
     getComments = (videoId) => {
@@ -154,9 +164,9 @@ class Main extends Component {
 
     likeOnHandler = (comment) => {
 
-        if(comment.likes){
+        if (comment.likes) {
             comment.likes++
-        }else{
+        } else {
             comment.likes = 1
         }
 
@@ -177,36 +187,36 @@ class Main extends Component {
 
     dislikeOnHandler = (comment) => {
 
-        if(comment.dislikes){
+        if (comment.dislikes) {
             comment.dislikes++
-        }else{
+        } else {
             comment.dislikes = 1
         }
-        
+
         Axios.put('http://localhost:5000/api/comments/' + comment._id, {
             "comment": comment.comment,
             "dislikes": comment.dislikes,
             "likes": comment.likes,
             "youtubeId": comment.youtubeId
         })
-        .then(res => {
-            this.getComments(comment.youtubeId)
-        }, function (err) {
-            console.log(err)
-        })
+            .then(res => {
+                this.getComments(comment.youtubeId)
+            }, function (err) {
+                console.log(err)
+            })
     }
 
     submitReply = (comment) => {
         Axios.put('http://localhost:5000/api/comments/replyComment/' + comment._id, {
             "comment": comment.comment
         })
-        .then(res => {
-            this.getComments(comment.youtubeId)
+            .then(res => {
+                this.getComments(comment.youtubeId)
 
-        }, function (err) {
+            }, function (err) {
 
-            console.log(err)
-        })
+                console.log(err)
+            })
     }
 
     render() {
@@ -218,10 +228,11 @@ class Main extends Component {
                 {
                     this.state.currentVideo &&
                     <div>
-                        <RelatedVideos relatedVideos={this.state.relatedVideos} playVideo={this.playVideo}/>
-                        
-                        <iframe allow="autoPlay" width="800" height="400" src={'https://www.youtube.com/embed/' + this.state.currentVideo} title="videos"></iframe>
-                        <Comments videoId={this.state.currentVideo} addNewComment={this.addNewComment} commentDetails={this.state.commentDetails} likeOnHandler={this.likeOnHandler} dislikeOnHandler={this.dislikeOnHandler} submitReply={this.submitReply}/>
+                        <RelatedVideos relatedVideos={this.state.relatedVideos} playVideo={this.playVideo} />
+                        <Fade in={this.state.fadeIn} tag="h5" className="mt-3">
+                            <MainVideo info={{title:'Name of Video', description: "Description of video", numberOfViews : "203,408 views Aug 13, 2020"}} currentVideo={'https://www.youtube.com/embed/' + this.state.currentVideo + '?autoplay=1&mute=1'} width={900} height={400} title={'Main Video'}/>
+                        </Fade>
+                        <Comments videoId={this.state.currentVideo} addNewComment={this.addNewComment} commentDetails={this.state.commentDetails} likeOnHandler={this.likeOnHandler} dislikeOnHandler={this.dislikeOnHandler} submitReply={this.submitReply} />
                     </div>
                 }
             </div>
