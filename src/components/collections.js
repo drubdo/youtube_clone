@@ -19,7 +19,7 @@ class CollectionVideos extends Component {
                 {
                     this.props.details.map((video, index) =>
                     <Col xs="6" sm="4" style={{padding:"15px", cursor:"pointer"}}>
-                            <img style={{width:"350px", height:"250px"}} src={'https://img.youtube.com/vi/' + video.contentDetails.videoId + '/default.jpg'}  onClick={() => this.playVideo(video.contentDetails.videoId)}/>
+                            <img style={{width:"350px", height:"250px"}} src={'https://img.youtube.com/vi/' + video.contentDetails.videoId + '/0.jpg'}  onClick={() => this.playVideo(video.contentDetails.videoId)}/>
                         </Col>
                     )
                 }
