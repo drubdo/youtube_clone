@@ -6,13 +6,14 @@ import RelatedVideos from './relatedVideos';
 import Comments from '../components/comments/comments';
 import MainVideo from './mainVideo';
 import { Fade } from 'reactstrap';
+const config = require('../config/default.json');
 
 class Main extends Component {
     constructor(props) {
         super(props)
 
         this.config = {
-            youtubeApi: 'AIzaSyD5RB6v7Enw2gFoBe8B12qznVdwf_yTRT0'
+            youtubeApi: config.youtubeApi
         }
         this.state = {
             searchValue: "",
